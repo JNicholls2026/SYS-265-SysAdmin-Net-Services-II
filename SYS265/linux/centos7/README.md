@@ -1,1 +1,0 @@
-secure-ssh.sh push
