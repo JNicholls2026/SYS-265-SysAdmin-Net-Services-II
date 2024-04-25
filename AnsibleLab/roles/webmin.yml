@@ -1,0 +1,44 @@
+---
+- name: Install required packages
+  hosts: webmin
+  become: yes
+  tasks:
+    - name: Install required packages
+      yum:
+        name:
+          - wget
+          - perl
+	  - perl-Net-SSLeay
+	  - openssl
+	  - perl-Encode-Detect
+	  - perl-Data-Dumper
+	state: present
+
+    - name: Download Webmin RPM
+      get_url:
+	url: http://www.webmin.com/download/rpm/webmin-current.rpm
+        dest: /tmp/webmin-current.rpm
+
+    - name: Install Webmin
+      yum:
+	name: /tmp/webmin-current.rpm
+	state: present
+	disable_gpg_check: yes
+
+    - name: Add firewall rule
+      firewalld:
+	port: 10000/tcp
+	permanent: true
+	state: enabled
+
+    - name: ReStart firewall Service
+      service:
+	name: firewalld
+	state: restarted
+	enabled: yes
+
+    - name: Start Webmin Service
+      service:
+	name: webmin
+	state: started
+	enabled: yes

@@ -1,0 +1,9 @@
+[git]
+ansible01-james
+[webmin]
+ansible02-james
+[windows]
+mgmt01-james
+wks01-james
+[windows:vars]
+ansible_shell_type=powershell
